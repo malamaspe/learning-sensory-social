@@ -77,8 +77,9 @@
    υπενθύμιση στο thread (το πολύ μία ανά 3 ημέρες) → `last_contact_at`.
 6. **Τέλος ουράς**: το email στον Πέτρο όταν η ουρά τελειώνει σε < 5 ημέρες το στέλνει το Apps Script
    (`queueEndCheck_`), ανεξάρτητα από εδώ. Δεν στέλνεις δεύτερο.
-7. **Καθαρισμός**: `cleanup_repo.py ../learning-sensory-social --days 3` (σβήνει από το repo και από το ιστορικό ό,τι
-   δημοσιεύτηκε πριν από 3+ ημέρες).
+7. **Καθαρισμός**: `cleanup_repo.py ../learning-sensory-social --days 3` (σβήνει από το repo ό,τι δημοσιεύτηκε
+   πριν από 3+ ημέρες). Με `--purge-history` (force push στο main) ΜΟΝΟ αν το `config.purge_history` είναι `true`,
+   δηλαδή αν το έχει εγκρίνει ρητά ο Πέτρος.
 8. Commit & push του ιδιωτικού repo αν άλλαξε κάτι.
 
 ## 4. Τι ΔΕΝ κάνεις ποτέ

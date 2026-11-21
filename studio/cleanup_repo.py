@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Σβήνει από το δημόσιο repo ό,τι δημοσιεύτηκε πριν από N ημέρες (προεπιλογή 3) — και από το ιστορικό του git.
 
-    python3 cleanup_repo.py <φάκελος repo> [--days 3] [--dry-run]
+    python3 cleanup_repo.py <φάκελος repo> [--days 3] [--dry-run] [--purge-history]
 
 1. Βγάζει από το queue.json τις εγγραφές με ώρα δημοσίευσης παλιότερη από N ημέρες.
 2. Σβήνει τα αρχεία τους από το media/ (και ό,τι άλλο στο media/ δεν το χρησιμοποιεί πια καμία εγγραφή και έχει
    ημερομηνία παλιότερη από N ημέρες) → commit.
-3. Ξαναγράφει το ιστορικό με git filter-repo ώστε τα σβησμένα αρχεία να μη μένουν σε κανένα παλιό commit
-   (ο κώδικας και το ιστορικό του μένουν) → force push.
-Χρειάζεται πλήρες clone (όχι shallow): το κάνει μόνο του (git fetch --unshallow).
+3. ΜΟΝΟ με --purge-history (θέλει ρητή έγκριση του Πέτρου, γιατί κάνει force push στο main): ξαναγράφει το
+   ιστορικό με git filter-repo ώστε τα σβησμένα αρχεία να μη μένουν σε κανένα παλιό commit (ο κώδικας και το
+   ιστορικό του μένουν). Χωρίς τη σημαία: απλό commit + push (τα αρχεία μένουν στο ιστορικό του git).
 Σημείωση: όποιος είχε ήδη κατεβάσει το repo κρατάει το αντίγραφό του, και το GitHub μπορεί να κρατά για λίγο
 αόρατα commits στην cache του. Το Instagram/Facebook δεν επηρεάζονται (έχουν ήδη δικό τους αντίγραφο).
 """
@@ -27,6 +27,7 @@ def git(repo, *args, check=True, capture=False):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('repo'); ap.add_argument('--days', type=float, default=3); ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--purge-history', action='store_true')
     a = ap.parse_args()
     repo = os.path.abspath(a.repo)
     qpath = os.path.join(repo, 'queue.json')
@@ -52,7 +53,7 @@ def main():
             print('  -', g)
         return
 
-    if git(repo, 'rev-parse', '--is-shallow-repository', capture=True) == 'true':
+    if a.purge_history and git(repo, 'rev-parse', '--is-shallow-repository', capture=True) == 'true':
         git(repo, 'fetch', '--unshallow', 'origin')
     q['items'] = keep
     json.dump(q, open(qpath, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
@@ -62,6 +63,10 @@ def main():
     git(repo, 'add', 'queue.json')
     git(repo, 'commit', '-q', '-m', f'Καθαρισμός: σβήστηκαν {len(gone)} αρχεία που δημοσιεύτηκαν πριν από {a.days:g}+ ημέρες')
 
+    if not a.purge_history:
+        git(repo, '-c', 'push.negotiate=true', 'push', 'origin', 'HEAD:main')
+        print(f'Έγινε: {len(gone)} αρχεία σβήστηκαν (μένουν στο ιστορικό του git· --purge-history για πλήρη αφαίρεση).')
+        return
     # Τα σβησμένα αρχεία φεύγουν από ΟΛΟ το ιστορικό. Και όλα τα media/ που δεν υπάρχουν πια στο τελευταίο commit.
     current = set(git(repo, 'ls-files', 'media', capture=True).splitlines())
     ever = set(git(repo, 'log', '--all', '--name-only', '--pretty=format:', '--', 'media', capture=True).split())
