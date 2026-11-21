@@ -11,3 +11,9 @@ studio/fonts/node_modules/
 *.MOV
 __pycache__/
 .DS_Store
+studio/models/
+studio/batches/
+studio/_review/
+*.review.jpg
+privacy_manifest.json
+studio/used_assets.txt

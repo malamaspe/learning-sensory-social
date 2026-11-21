@@ -1,0 +1,57 @@
+{
+ "source": "Pixabay Music (Pixabay Content License: commercial use, no attribution required). Only links are stored here; download each track from its url when needed. Αρχική λίστα από κομμάτια που είχε ήδη εγκρίνει ο Πέτρος (16/11/2026) για NDT/Amaze, όσα ταιριάζουν σε κέντρο για παιδιά (ήρεμα/ζεστά/χαρούμενα). Θα προστεθούν παιδικά/ακουστικά κομμάτια (ukulele, ακουστική κιθάρα, απαλό πιάνο) από το Pixabay Music. Ποτέ mp3 στο repo.",
+ "tracks": [
+  {
+   "id": "ls_01",
+   "brand": "LS",
+   "title": "Piano and Strings",
+   "artist": "zec53",
+   "mood": "calm",
+   "dur": 134.7,
+   "bpm": 161.5,
+   "best_start": 88.6,
+   "page": "https://pixabay.com/music/modern-classical-piano-and-strings-ambient-confident-and-light-full-633882/",
+   "url": "https://cdn.pixabay.com/audio/2026/11/08/audio_1091784b7a.mp3",
+   "from": "amaze_05"
+  },
+  {
+   "id": "ls_02",
+   "brand": "LS",
+   "title": "Beautiful Uplifting",
+   "artist": "Twisterium",
+   "mood": "warm",
+   "dur": 181.5,
+   "bpm": 136.0,
+   "best_start": 154.6,
+   "page": "https://pixabay.com/music/ambient-beautiful-uplifting-music-618490/",
+   "url": "https://cdn.pixabay.com/audio/2026/10/10/audio_040cc78fa4.mp3",
+   "from": "amaze_08"
+  },
+  {
+   "id": "ls_03",
+   "brand": "LS",
+   "title": "Upbeat Corporate Optimistic Strategy",
+   "artist": "alexrockbeat",
+   "mood": "upbeat",
+   "dur": 128.0,
+   "bpm": 123.0,
+   "best_start": 96.5,
+   "page": "https://pixabay.com/music/corporate-upbeat-corporate-optimistic-strategy-631550/",
+   "url": "https://cdn.pixabay.com/audio/2026/11/04/audio_734e4263c1.mp3",
+   "from": "ndt_12"
+  },
+  {
+   "id": "ls_04",
+   "brand": "LS",
+   "title": "Upbeat Pop 2",
+   "artist": "HitsLab",
+   "mood": "playful",
+   "dur": 102.3,
+   "bpm": 123.0,
+   "best_start": 69.6,
+   "page": "https://pixabay.com/music/upbeat-upbeat-upbeat-music-300654/",
+   "url": "https://cdn.pixabay.com/audio/2025/02/13/audio_d798ad4caf.mp3",
+   "from": "amaze_03"
+  }
+ ]
+}
