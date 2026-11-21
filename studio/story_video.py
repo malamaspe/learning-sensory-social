@@ -9,7 +9,7 @@ track_id από το music_library.json (π.χ. ls_01). Το κομμάτι κα
 H.264 30fps yuv420p, AAC 128k 48kHz, -16 LUFS, fade in 0,4″ / fade out 1,5″, faststart.
 Όρια story: 3–60″, ≤100MB (Instagram) — εδώ ~12″, ~2–4MB.
 """
-import json, os, subprocess, sys
+import hashlib, json, os, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 CACHE = os.environ.get('MUSIC_CACHE', '/tmp/music_cache')
 
@@ -17,7 +17,7 @@ def track(tid):
     lib = json.load(open(os.path.join(HERE, 'music_library.json')))['tracks']
     t = next(x for x in lib if x['id'] == tid)
     os.makedirs(CACHE, exist_ok=True)
-    path = os.path.join(CACHE, tid + '.mp3')
+    path = os.path.join(CACHE, tid + '_' + hashlib.sha1(t['url'].encode()).hexdigest()[:8] + '.mp3')
     if not os.path.exists(path) or os.path.getsize(path) < 10000:
         subprocess.run(['curl', '-sSfL', '-A', 'Mozilla/5.0', '-o', path, t['url']], check=True)
     return t, path
