@@ -1,0 +1,13 @@
+# Ποτέ ακατέργαστο υλικό ή μουσική στο δημόσιο repo
+studio/assets/
+studio/out/
+studio/raw/
+studio/fonts/node_modules/
+*.mp3
+*.wav
+*.heic
+*.HEIC
+*.mov
+*.MOV
+__pycache__/
+.DS_Store
