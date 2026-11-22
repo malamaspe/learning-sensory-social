@@ -7,7 +7,8 @@
 ```
 queue.json                 το εγκεκριμένο πρόγραμμα (τι, πότε)
 media/<ΕΕΕΕ-ΜΜ>/LS/...     τα αρχεία των επόμενων δημοσιεύσεων
-publisher/                 Apps Script: Code.gs (δημοσίευση), Tidy.gs (διπλότυπα), Upload.gs (iPhone), appsscript.json
+publisher/                 Apps Script: Code.gs (δημοσίευση), Tidy.gs (διπλότυπα), Transfer.gs (μεγάλα βίντεο σε κομμάτια),
+                           Upload.gs (iPhone), appsscript.json
 studio/                    εργαλεία παραγωγής (engine, privacy_check, make_reel, make_queue, build_approval_pdf, cleanup_repo)
 studio/RUNBOOK.md          η διαδικασία του μήνα (παραγωγή → έγκριση με email → ουρά → καθαρισμός)
 PRIVACY.md                 πολιτική απορρήτου (για την εφαρμογή Meta)
@@ -43,7 +44,8 @@ PRIVACY.md                 πολιτική απορρήτου (για την ε
 1. Νέο Google Sheet με όνομα **LS Publisher** (στο `malamaspe@gmail.com`).
 2. Επεκτάσεις → Apps Script. Όνομα έργου: **LS Publisher**.
 3. Σβήνεις ό,τι υπάρχει στο `Code.gs` και επικολλάς το `publisher/Code.gs`.
-4. Νέο αρχείο (+ → Σενάριο) `Tidy` → επικόλληση `publisher/Tidy.gs`. Νέο αρχείο `Upload` → επικόλληση `publisher/Upload.gs`.
+4. Νέο αρχείο (+ → Σενάριο) `Tidy` → επικόλληση `publisher/Tidy.gs`. Νέο αρχείο `Transfer` → επικόλληση
+   `publisher/Transfer.gs`. Νέο αρχείο `Upload` → επικόλληση `publisher/Upload.gs`.
 5. Ρυθμίσεις έργου (γρανάζι) → «Εμφάνιση αρχείου manifest appsscript.json» → επικόλληση `publisher/appsscript.json`. Ζώνη ώρας: Athens.
 6. Ρυθμίσεις έργου → Ιδιότητες σεναρίου → Προσθήκη: `TOKEN_LS` = το token του βήματος 3.
 

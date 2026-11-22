@@ -7,14 +7,15 @@
  *   ήδη χρησιμοποιηθεί (ΧΡΗΣΙΜΟΠΟΙΗΜΕΝΑ) ή απορριφθεί (ΑΠΟΡΡΙΦΘΗΚΑΝ), το νέο αντίγραφο φεύγει.
  *   Τα υπόλοιπα: δικά σου → κάδος (30 ημέρες) · άλλων μελών του κέντρου → βγαίνουν μόνο από τον φάκελο
  *   (μένουν στο δικό τους Drive). Τίποτα δεν σβήνεται οριστικά. Email μόνο όταν βρει κάτι.
- * setupDailyDedupe(): τρέχει τον έλεγχο τώρα και μετά κάθε βράδυ (~04:00), αυτόματα.
+ * setupDailyDedupe(): τρέχει τον έλεγχο τώρα και μετά κάθε βράδυ (~04:00), αυτόματα. Μετά τα διπλότυπα, την ίδια
+ *   νύχτα, κόβει και τα μεγάλα βίντεο για τον Claude (splitBigVideos, Transfer.gs).
  */
 const TIDY_ = {
   BUDGET_MS: 4.5 * 60 * 1000,    // ασφαλώς κάτω από το όριο των 6 λεπτών του Apps Script
   API: 'https://www.googleapis.com/drive/v3/files',
   FOLDER: 'application/vnd.google-apps.folder',
 };
-const DEDUPE_SKIP_ = ['ΕΓΚΡΙΣΗ'];   // αρχεία που φτιάχνει το ίδιο το σύστημα· δεν πειράζονται
+const DEDUPE_SKIP_ = ['ΕΓΚΡΙΣΗ', '_ΜΕΤΑΦΟΡΑ'];   // αρχεία που φτιάχνει το ίδιο το σύστημα· δεν πειράζονται
 
 function setupDailyDedupe() {
   ScriptApp.getProjectTriggers().forEach(function (t) {
@@ -25,10 +26,21 @@ function setupDailyDedupe() {
   dedupeMaterial();
 }
 
+// Κάθε βράδυ: διπλότυπα και μετά κόψιμο μεγάλων βίντεο για τον Claude (Transfer.gs), στον χρόνο που μένει.
 function dedupeMaterial() {
+  const start = Date.now();
+  const n = dedupeOnly_(start + TIDY_.BUDGET_MS - 90 * 1000);
+  try {
+    splitBigVideos(start + TIDY_.BUDGET_MS);
+  } catch (e) {
+    notify_('Σφάλμα στο κόψιμο μεγάλων βίντεο', 'Η splitBigVideos σταμάτησε: ' + e.message + '\n\nΕνημερώστε τον Πέτρο.');
+  }
+  return n;
+}
+
+function dedupeOnly_(deadline) {
   const it = DriveApp.getFoldersByName(ROOT_FOLDER);
   if (!it.hasNext()) throw new Error('Δεν βρέθηκε ο φάκελος «' + ROOT_FOLDER + '».');
-  const deadline = Date.now() + TIDY_.BUDGET_MS;
   const files = tidyWalk_(it.next().getId()).files.filter(function (f) {
     return f.md5 && DEDUPE_SKIP_.indexOf(f.path[0]) < 0;
   });
