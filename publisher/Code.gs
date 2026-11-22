@@ -15,6 +15,8 @@
  *   REEL_STORY      false για να ΜΗΝ βγαίνει κάθε reel και ως story (προεπιλογή: βγαίνει 15′ μετά)
  *   TRIAL_REELS     true για δοκιμαστικά reels (πρώτα σε μη ακολούθους). Προεπιλογή: false, κανονικά reels.
  *   GRAPH_VERSION   προαιρετικό, π.χ. v23.0 (κενό = η έκδοση της εφαρμογής Meta)
+ *   NOTIFY_TO       πού πάνε ΟΛΑ τα email ειδοποίησης (σφάλματα, τέλος ουράς, διπλότυπα, σύνδεσμος συντόμευσης).
+ *                   Κενό = το email του κέντρου (CFG.NOTIFY_TO). Πολλοί παραλήπτες με κόμμα.
  *
  * Συναρτήσεις που τρέχεις με το χέρι (επιλογή πάνω στη γραμμή εργαλείων → Εκτέλεση):
  *   findInstagramIds()  βρίσκει και αποθηκεύει τα IDs Instagram και σελίδας Facebook
@@ -38,6 +40,7 @@ const CFG = {
   EVERY_MIN: 10,
   REEL_STORY_DELAY_MIN: 15,   // το story ενός reel βγαίνει τόσα λεπτά μετά το reel
   QUEUE_WARN_DAYS: 5,         // email όταν η ουρά τελειώνει σε λιγότερες από τόσες ημέρες
+  NOTIFY_TO: 'learning.sensory.or@gmail.com',   // απόφαση Πέτρου 22/11: οι ειδοποιήσεις πάνε στο κέντρο
 };
 
 // ------------------------------------------------------------------ helpers
@@ -81,9 +84,11 @@ function api_(method, path, params, tok) {
   return body;
 }
 
+function notifyTo_() { return prop_('NOTIFY_TO', CFG.NOTIFY_TO); }
+
 function notify_(subject, text) {
   try {
-    MailApp.sendEmail(Session.getEffectiveUser().getEmail(), '[LS Publisher] ' + subject, text);
+    MailApp.sendEmail(notifyTo_(), '[LS Publisher] ' + subject, text);
   } catch (e) { console.error('email failed: ' + e.message); }
 }
 
@@ -469,7 +474,7 @@ function onOpen() {
 
 function menuSetProperty() {
   const ui = SpreadsheetApp.getUi();
-  const k = ui.prompt('Αλλαγή ρύθμισης', 'Όνομα ρύθμισης, π.χ. TOKEN_LS, FB_ENABLED, PAUSED, REEL_STORY:', ui.ButtonSet.OK_CANCEL);
+  const k = ui.prompt('Αλλαγή ρύθμισης', 'Όνομα ρύθμισης, π.χ. TOKEN_LS, NOTIFY_TO, FB_ENABLED, PAUSED, REEL_STORY:', ui.ButtonSet.OK_CANCEL);
   if (k.getSelectedButton() !== ui.Button.OK) return;
   const key = k.getResponseText().trim();
   if (!/^[A-Za-z0-9_]+$/.test(key)) { ui.alert('Μη έγκυρο όνομα: «' + key + '»'); return; }
