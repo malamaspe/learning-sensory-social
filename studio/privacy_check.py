@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Έλεγχος απορρήτου για Learning & Sensory: τίποτα δεν πάει στο δημόσιο repo χωρίς να περάσει από εδώ.
 
-Κανόνας (απόφαση Πέτρου 21/11/2026): δεν υπάρχει γραπτή συναίνεση γονέων, άρα ΚΑΝΕΝΑ παιδί, ούτε θολωμένο.
-Επιτρέπονται μόνο χέρια/υλικά σε δραστηριότητα, χωρίς πρόσωπο, χωρίς ρούχα που ξεχωρίζουν, χωρίς ονόματα.
-Πρόσωπα ενηλίκων (υπεύθυνη, συνεργάτιδες) επιτρέπονται. Ονόματα παιδιών σε ζωγραφιές/ντουλαπάκια θολώνονται.
+Κανόνας (απόφαση Πέτρου 22/11/2026, αντικαθιστά της 21/11): φωτογραφίες/βίντεο με παιδιά ΔΕΝ απορρίπτονται·
+ΚΑΘΕ πρόσωπο που μπορεί να είναι παιδιού θολώνεται (στην αμφιβολία θόλωμα), ακόμα κι αν φαίνονται ρούχα.
+Ό,τι δεν θολώνεται αξιόπιστα (π.χ. γρήγορη κίνηση, πρόσωπο που δεν πιάνει ο ανιχνευτής) ΔΕΝ χρησιμοποιείται.
+Πρόσωπα ενηλίκων (υπεύθυνη, συνεργάτιδες) μένουν καθαρά. Ονόματα παιδιών σε ζωγραφιές/ντουλαπάκια θολώνονται.
 
 Ανίχνευση προσώπων (YuNet) και ανθρώπων (YOLOX) — ΟΧΙ αναγνώριση: δεν βρίσκει ΠΟΙΟΣ είναι, μόνο ΑΝ υπάρχει
 πρόσωπο/άνθρωπος. Δεν κρίνει ηλικία: κάθε εύρημα το κοιτάζει ο Claude στα φύλλα ελέγχου και αποφασίζει·
@@ -14,6 +15,12 @@
          Ακατέργαστο υλικό: πρόσωπα, άνθρωποι, κείμενο (OCR ελληνικά/αγγλικά) → report.json + φύλλα ελέγχου
          (review/<αρχείο>.jpg με κουτιά: κόκκινο πρόσωπο, πορτοκαλί άνθρωπος, μπλε κείμενο). Για βίντεο και
          χρονολόγιο: σε ποια δευτερόλεπτα υπάρχει πρόσωπο/άνθρωπος.
+  blurfaces <εικόνα|βίντεο> <έξοδος> --review <φάκελος> [--keep F2,T3]
+         Θολώνει ΟΛΑ τα πρόσωπα (pixelate + gaussian, έλλειψη με περιθώριο), εκτός από όσα δοθούν στο --keep
+         (ενήλικες: F<n> σε φωτογραφία, T<n> = ίχνος προσώπου σε βίντεο). Στα βίντεο: ανίχνευση σε ΚΑΘΕ καρέ,
+         ίχνη με συνέχεια, γέμισμα κενών έως 10 καρέ και +6 καρέ πριν/μετά, ήχος αφαιρείται. Μετά ξαναψάχνει
+         πρόσωπα στο αποτέλεσμα (ό,τι βρεθεί εκτός --keep = ΑΠΟΤΥΧΙΑ, exit 2) και γράφει φύλλα ελέγχου:
+         <review>/<όνομα>.ids.jpg (πρόσωπα με αριθμό, πριν το θόλωμα) και <όνομα>.after_NN.jpg (μετά, πυκνά).
   blur   <εικόνα> <έξοδος> --box x,y,w,h [--box …]
          Θόλωμα περιοχών (π.χ. όνομα σε ζωγραφιά): pixelate + gaussian, με περιθώριο. Το αποτέλεσμα ξαναελέγχεται.
   clean  <είσοδος> <έξοδος>
@@ -385,6 +392,205 @@ def cmd_clean(a):
     sys.exit(1 if pr else 0)
 
 
+
+# ---------------------------------------------------------------- blur faces (παιδιά)
+HOLD, MAXGAP, PAD = 6, 10, 0.35
+
+
+def blur_face(img, box, pad=PAD):
+    """Θόλωμα ενός προσώπου σε έλλειψη με περιθώριο (pixelate + gaussian), επιτόπου."""
+    x, y, w, h = box[:4]
+    H, W = img.shape[:2]
+    cx, cy = x + w / 2, y + h / 2 - h * 0.05
+    ax, ay = w * (1 + 2 * pad) / 2, h * (1 + 2 * pad) * 1.12 / 2
+    x0, y0, x1, y1 = int(max(0, cx - ax)), int(max(0, cy - ay)), int(min(W, cx + ax)), int(min(H, cy + ay))
+    if x1 - x0 < 4 or y1 - y0 < 4:
+        return
+    roi = img[y0:y1, x0:x1]
+    k = max(8, (x1 - x0) // 7)
+    small = cv2.resize(roi, (max(1, (x1 - x0) // k), max(1, (y1 - y0) // k)), interpolation=cv2.INTER_AREA)
+    pix = cv2.resize(small, (x1 - x0, y1 - y0), interpolation=cv2.INTER_NEAREST)
+    pix = cv2.GaussianBlur(pix, (0, 0), max(5.0, (x1 - x0) / 8))
+    mask = np.zeros((y1 - y0, x1 - x0), np.float32)
+    cv2.ellipse(mask, (int(cx - x0), int(cy - y0)), (int(ax), int(ay)), 0, 0, 360, 1.0, -1)
+    mask = cv2.GaussianBlur(mask, (0, 0), 2.5)[..., None]
+    roi[:] = (roi * (1 - mask) + pix * mask).astype(np.uint8)
+
+
+def iou(a, b):
+    ax, ay, aw, ah = a[:4]; bx, by, bw, bh = b[:4]
+    ix, iy = max(0, min(ax + aw, bx + bw) - max(ax, bx)), max(0, min(ay + ah, by + bh) - max(ay, by))
+    inter = ix * iy
+    return inter / (aw * ah + bw * bh - inter + 1e-9)
+
+
+def near(a, b):
+    """Ίδιο πρόσωπο σε διπλανά καρέ: επικάλυψη ή κέντρα κοντά σε σχέση με το μέγεθος."""
+    if iou(a, b) > 0.15:
+        return True
+    d = ((a[0] + a[2] / 2 - b[0] - b[2] / 2) ** 2 + (a[1] + a[3] / 2 - b[1] - b[3] / 2) ** 2) ** 0.5
+    return d < 0.8 * max(a[2], b[2])
+
+
+def tracks_from(dets):
+    """dets: λίστα ανά καρέ με κουτιά → λίστα ιχνών {frame: box}."""
+    tracks = []
+    for f, boxes in enumerate(dets):
+        for b in boxes:
+            best = None
+            for t in tracks:
+                lf = max(t)
+                if f - lf <= MAXGAP and lf != f and near(t[lf], b) and (best is None or iou(t[lf], b) > iou(best[max(best)], b)):
+                    best = t
+            if best is None:
+                tracks.append({f: b})
+            else:
+                best[f] = b
+    return tracks
+
+
+def fill(track, n):
+    """Γέμισμα κενών (γραμμική παρεμβολή) και κράτημα HOLD καρέ πριν/μετά."""
+    fs = sorted(track)
+    out = dict(track)
+    for a, b in zip(fs, fs[1:]):
+        for f in range(a + 1, b):
+            t = (f - a) / (b - a)
+            out[f] = tuple(track[a][i] * (1 - t) + track[b][i] * t for i in range(4))
+    for f in range(max(0, fs[0] - HOLD), fs[0]):
+        out[f] = track[fs[0]]
+    for f in range(fs[-1] + 1, min(n, fs[-1] + HOLD + 1)):
+        out[f] = track[fs[-1]]
+    return out
+
+
+def covered(b, boxes, pad=PAD):
+    """Το κουτί b πέφτει πάνω σε περιοχή που θολώθηκε/κρατήθηκε (κέντρο μέσα στη διευρυμένη έλλειψη ή επικάλυψη)."""
+    cx, cy = b[0] + b[2] / 2, b[1] + b[3] / 2
+    for x, y, w, h in (q[:4] for q in boxes):
+        ax, ay = w * (1 + 2 * pad) / 2, h * (1 + 2 * pad) * 1.12 / 2
+        if ((cx - x - w / 2) / ax) ** 2 + ((cy - y - h / 2 + h * 0.05) / ay) ** 2 <= 1 or iou(b, (x, y, w, h)) > 0.2:
+            return True
+    return False
+
+
+def crop_thumb(img, box, label):
+    x, y, w, h = (int(v) for v in box[:4])
+    m = int(max(w, h) * 0.6)
+    c = img[max(0, y - m):y + h + m, max(0, x - m):x + w + m]
+    im = Image.fromarray(cv2.cvtColor(c, cv2.COLOR_BGR2RGB)) if c.size else Image.new('RGB', (64, 64))
+    im.thumbnail((360, 360))
+    can = Image.new('RGB', (360, 400), (30, 30, 30)); can.paste(im, ((360 - im.width) // 2, 40))
+    ImageDraw.Draw(can).text((10, 8), label, fill=(255, 255, 0), font=font(24))
+    return can
+
+
+def blurfaces_image(src, dst, review, keep, F):
+    img = load_image(src)
+    faces = sorted(F(img), key=lambda b: (b[0], b[1]))
+    ids = {f'F{i + 1}': b for i, b in enumerate(faces)}
+    name = Path(src).name
+    pre = draw(img, [], [], [], f'{name}: {len(faces)} πρόσωπα (πριν το θόλωμα)')
+    d = ImageDraw.Draw(pre)
+    for k, (x, y, w, h, sc) in ids.items():
+        d.rectangle([x, y, x + w, y + h], outline=(255, 0, 0), width=max(3, pre.width // 250))
+        d.text((x, max(0, y - pre.width // 30)), k, fill=(255, 255, 0), font=font(max(18, pre.width // 35)))
+    pre.save(review / f'{name}.ids.jpg', quality=85)
+    for k, b in ids.items():
+        if k not in keep:
+            blur_face(img, b)
+    out = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    clean = Image.new('RGB', out.size); clean.paste(out)
+    Path(dst).parent.mkdir(parents=True, exist_ok=True)
+    clean.save(dst, 'JPEG', quality=93)
+    done = list(ids.values())   # θολωμένα + κρατημένα (ενήλικες)
+    left = [b for b in F(load_image(dst)) if not covered(b, done)]
+    draw(load_image(dst), left, [], [], f'{name}: ΜΕΤΑ — πρόσωπα που φαίνονται ακόμα: {len(left)}').save(
+        review / f'{name}.after_01.jpg', quality=85)
+    return {'faces': len(faces), 'blurred': len([k for k in ids if k not in keep]), 'kept': sorted(set(keep) & set(ids)),
+            'residual': len(left)}
+
+
+def blurfaces_video(src, dst, review, keep, F, Pp):
+    name = Path(src).name
+    cap = cv2.VideoCapture(str(src))
+    fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
+    frames, dets = [], []
+    while True:
+        ok, fr = cap.read()
+        if not ok:
+            break
+        frames.append(fr)
+        dets.append(F(fr))
+    cap.release()
+    n = len(frames)
+    if not n:
+        sys.exit(f'{src}: δεν διαβάστηκε κανένα καρέ')
+    raw_tracks = tracks_from(dets)
+    tracks = {f'T{i + 1}': t for i, t in enumerate(sorted(raw_tracks, key=min))}
+    thumbs = []
+    for k, t in tracks.items():
+        f = max(t, key=lambda q: t[q][2] * t[q][3])
+        thumbs.append(crop_thumb(frames[f], t[f], f'{k}: {min(t) / fps:.1f}–{max(t) / fps:.1f}s, {len(t)} καρέ'))
+    if thumbs:
+        sheet(thumbs, cols=4, width=1440).save(review / f'{name}.ids.jpg', quality=85)
+    plan = [[] for _ in range(n)]
+    for k, t in tracks.items():
+        if k in keep:
+            continue
+        for f, b in fill(t, n).items():
+            plan[f].append(b)
+    H, W = frames[0].shape[:2]
+    Path(dst).parent.mkdir(parents=True, exist_ok=True)
+    enc = subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'bgr24', '-s', f'{W}x{H}', '-r', f'{fps}',
+                            '-i', '-', '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-pix_fmt', 'yuv420p',
+                            '-map_metadata', '-1', '-movflags', '+faststart', str(dst)], stdin=subprocess.PIPE)
+    for f, fr in enumerate(frames):
+        for b in plan[f]:
+            blur_face(fr, b)
+        enc.stdin.write(fr.tobytes())
+    enc.stdin.close(); enc.wait()
+    # έλεγχος μετά: πρόσωπα που φαίνονται ακόμα (εκτός ενηλίκων του --keep) σε ΚΑΘΕ καρέ του αποτελέσματος
+    done = [[] for _ in range(n)]   # ανά καρέ: θολωμένα + κρατημένα (ενήλικες)
+    for k, t in tracks.items():
+        for ff, b in fill(t, n).items():
+            done[ff].append(b)
+    cap = cv2.VideoCapture(str(dst))
+    residual, after, step, f, nxt = [], [], max(1, int(round(fps / 4))), 0, 0
+    while True:
+        ok, fr = cap.read()
+        if not ok:
+            break
+        left = [b for b in F(fr) if not covered(b, done[f] if f < n else [])]
+        if left:
+            residual.append(round(f / fps, 2))
+        if f % step == 0 or left:
+            people = Pp(fr) if f % step == 0 else []
+            after.append(draw(fr, left, people, [], f'{f / fps:5.2f}s ΜΕΤΑ  πρόσωπα που φαίνονται:{len(left)} άνθρωποι:{len(people)}'))
+        f += 1
+    cap.release()
+    for s in range(0, len(after), 24):
+        sheet(after[s:s + 24]).save(review / f'{name}.after_{s // 24 + 1:02d}.jpg', quality=80)
+    return {'frames': n, 'fps': round(fps, 3), 'tracks': {k: [round(min(t) / fps, 2), round(max(t) / fps, 2), len(t)] for k, t in tracks.items()},
+            'kept': sorted(set(keep) & set(tracks)), 'residual_seconds': segments(residual, 1 / fps)}
+
+
+def cmd_blurfaces(a):
+    review = Path(a.review); review.mkdir(parents=True, exist_ok=True)
+    keep = [k.strip() for k in (a.keep or '').split(',') if k.strip()]
+    F = Faces()
+    if Path(a.src).suffix.lower() in VID_EXT:
+        r = blurfaces_video(a.src, a.dst, review, keep, F, People())
+        bad = bool(r['residual_seconds'])
+    else:
+        r = blurfaces_image(a.src, a.dst, review, keep, F)
+        bad = r['residual'] > 0
+    print(json.dumps(r, ensure_ascii=False))
+    print(('ΑΠΟΤΥΧΙΑ: φαίνονται ακόμα πρόσωπα (δες τα φύλλα *.after_*). Κόψε αυτά τα σημεία ή μην το χρησιμοποιήσεις.'
+           if bad else 'OK: δεν βρέθηκε πρόσωπο εκτός --keep. ΚΟΙΤΑ τα φύλλα *.after_* πριν το χρησιμοποιήσεις.'))
+    sys.exit(2 if bad else 0)
+
+
 # ---------------------------------------------------------------- verify / mark
 def manifest_path(batch):
     return Path(batch) / 'privacy_manifest.json'
@@ -457,6 +663,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sp = ap.add_subparsers(dest='cmd', required=True)
     s = sp.add_parser('scan'); s.add_argument('paths', nargs='+'); s.add_argument('--out', required=True); s.set_defaults(fn=cmd_scan)
+    s = sp.add_parser('blurfaces'); s.add_argument('src'); s.add_argument('dst'); s.add_argument('--review', required=True)
+    s.add_argument('--keep', default=''); s.set_defaults(fn=cmd_blurfaces)
     s = sp.add_parser('blur'); s.add_argument('src'); s.add_argument('dst'); s.add_argument('--box', action='append', required=True); s.set_defaults(fn=cmd_blur)
     s = sp.add_parser('clean'); s.add_argument('src'); s.add_argument('dst'); s.set_defaults(fn=cmd_clean)
     s = sp.add_parser('verify'); s.add_argument('batch'); s.set_defaults(fn=cmd_verify)

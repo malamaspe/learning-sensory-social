@@ -6,7 +6,7 @@
 - Δεν συλλέγει, δεν αποθηκεύει και δεν μοιράζεται προσωπικά δεδομένα χρηστών του Instagram ή του Facebook.
 - Τα μόνα στοιχεία που διαβάζει είναι τα βασικά στοιχεία των λογαριασμών του κέντρου (όνομα, ID) και η κατάσταση των δικών του δημοσιεύσεων.
 - Το access token φυλάσσεται μόνο στις ρυθμίσεις του εργαλείου του κέντρου και δεν κοινοποιείται.
-- Στις δημοσιεύσεις δεν εμφανίζονται παιδιά. Από κάθε αρχείο αφαιρούνται τα μεταδεδομένα (π.χ. τοποθεσία) πριν δημοσιευτεί, και τα αρχεία σβήνονται από αυτό το αποθετήριο λίγες ημέρες μετά τη δημοσίευση.
+- Τα πρόσωπα των παιδιών θολώνονται πάντα και δεν αναφέρονται ονόματα παιδιών. Από κάθε αρχείο αφαιρούνται τα μεταδεδομένα (π.χ. τοποθεσία) πριν δημοσιευτεί, και τα αρχεία σβήνονται από αυτό το αποθετήριο λίγες ημέρες μετά τη δημοσίευση.
 
 **Διαγραφή δεδομένων / επικοινωνία:** η εφαρμογή δεν κρατά δεδομένα χρηστών. Για οποιοδήποτε αίτημα: learning.sensory.or@gmail.com
 
@@ -20,8 +20,8 @@
 - It does not collect, store or share personal data of Instagram or Facebook users.
 - The only information it reads is basic information about the center's own accounts (name, ID) and the status of its own posts.
 - The access token is kept only in the center's own tool settings and is never shared.
-- No children appear in the published content. Metadata (e.g. location) is removed from every file before publishing, and files are deleted from this repository a few days after publication.
+- Children's faces are always blurred and children's names are never shown. Metadata (e.g. location) is removed from every file before publishing, and files are deleted from this repository a few days after publication.
 
 **Data deletion / contact:** the app does not keep any user data. For any request: learning.sensory.or@gmail.com
 
-Last updated: 21 November 2026
+Last updated: 22 November 2026
