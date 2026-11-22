@@ -64,7 +64,7 @@ Gmail του Πέτρου, θέμα που ξεκινά «[LS Social] », ελλ
    αγκύλες, π.χ. «[η θεραπεύτριά μας]», «[ο θεραπευτής μας]», «[το παιδί μας]» (απόφαση 22/11/2026). Οι αγκύλες
    δείχνουν ότι είναι δική μας αλλαγή· το υπόλοιπο κείμενο μένει αυτούσιο.
    Μουσική: κυρίως `mood: playful` (παιδικά/χαρούμενα)· `gentle/calm/warm` για κριτικές και συμβουλευτική γονέων.
-6. Πηγές → `privacy_check.py clean` → `studio/assets/`. Script παρτίδας `batches/<ΕΕΕΕ-ΜΜ>/build.py` (engine.py) →
+6. Πηγές → `privacy_check.py clean` → `studio/assets/` (και αντίγραφο στο `batches/<ΕΕΕΕ-ΜΜ>/assets/` για τις διορθώσεις). Script παρτίδας `batches/<ΕΕΕΕ-ΜΜ>/build.py` (engine.py) →
    `batches/<ΕΕΕΕ-ΜΜ>/LS/`. Stories με μουσική: `story_video.py`. Reels: `make_reel.py`. Λεζάντες στο `captions.json`.
    Λίστα πηγών (ID Drive → asset) στο `batches/<ΕΕΕΕ-ΜΜ>/sources.json`.
 7. `privacy_check.py verify batches/<ΕΕΕΕ-ΜΜ>` → κοίτα ΚΑΘΕ φύλλο στο `_review/` → `mark ok|reject … --note`.
@@ -91,7 +91,8 @@ Gmail του Πέτρου, θέμα που ξεκινά «[LS Social] », ελλ
    - `used_assets.txt` (στο ιδιωτικό repo): μία γραμμή ανά πηγή με phash.
    - Σύντομη απάντηση στο thread: «Ευχαριστούμε! Το πρόγραμμα μπήκε σε αυτόματη δημοσίευση.»
    - `state.json` → `status: "queued"`, `approved_at`.
-3. **Διορθώσεις**: εφάρμοσέ τες (ξανά verify + οπτικός έλεγχος για ό,τι άλλαξε) → νέα PDF (`--round N+1
+3. **Διορθώσεις**: τα καθαρισμένα assets του μήνα είναι στο `batches/<ΕΕΕΕ-ΜΜ>/assets/` του ιδιωτικού repo → αντέγραψέ τα
+   στο `studio/assets/` πριν τρέξεις το `build.py` της παρτίδας. Εφάρμοσέ τες (ξανά verify + οπτικός έλεγχος για ό,τι άλλαξε) → νέα PDF (`--round N+1
    --changes "#7: …|#12: …"`) → ανέβασμα στον ίδιο φάκελο (τα παλιά PDF στον κάδο) → `reply` στο ίδιο thread με
    τη λίστα αλλαγών και το νέο PDF → `state.round += 1`, `last_contact_at`.
 4. **Αμφίσημο** (π.χ. ερώτηση): ευγενική, σύντομη διευκρίνιση στο thread. Δεν θεωρείται έγκριση.
