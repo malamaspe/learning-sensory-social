@@ -41,7 +41,7 @@ PRIVACY.md                 πολιτική απορρήτου (για την ε
 Το token δεν λήγει. Σταματά μόνο αν αλλάξεις κωδικό στο Facebook ή χάσεις τον ρόλο σου στη σελίδα: τότε έρχεται email σφάλματος και επαναλαμβάνεις τα βήματα 1–4.
 
 ### 4. Google Sheet + Apps Script
-1. Νέο Google Sheet με όνομα **LS Publisher** (στο `malamaspe@gmail.com`).
+1. Νέο Google Sheet με όνομα **LS Publisher** (στον λογαριασμό Google του Πέτρου).
 2. Επεκτάσεις → Apps Script. Όνομα έργου: **LS Publisher**.
 3. Σβήνεις ό,τι υπάρχει στο `Code.gs` και επικολλάς το `publisher/Code.gs`.
 4. Νέο αρχείο (+ → Σενάριο) `Tidy` → επικόλληση `publisher/Tidy.gs`. Νέο αρχείο `Transfer` → επικόλληση
