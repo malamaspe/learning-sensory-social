@@ -41,6 +41,7 @@ const CFG = {
   REEL_STORY_DELAY_MIN: 15,   // το story ενός reel βγαίνει τόσα λεπτά μετά το reel
   QUEUE_WARN_DAYS: 5,         // email όταν η ουρά τελειώνει σε λιγότερες από τόσες ημέρες
   NOTIFY_TO: 'learning.sensory.or@gmail.com',   // απόφαση Πέτρου 22/11: οι ειδοποιήσεις πάνε στο κέντρο
+  TEST_IMAGE_URL: 'https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/publisher/test/dryrun.jpg', // μόνο για dryRun με άδεια ουρά
 };
 
 // ------------------------------------------------------------------ helpers
@@ -434,16 +435,18 @@ function dryRun() {
   const next = q.items.filter(function (it) {
     return igEnabled_(it) && !S.getProperty('done_' + it.id) && new Date(it.publish_at) > now && it.images && it.images.length;
   })[0];
-  if (!next) { console.log('Δεν υπάρχει επόμενη δημοσίευση με εικόνα.'); return; }
+  // Άδεια ουρά (π.χ. πριν την πρώτη έγκριση): δοκιμή με σταθερή εικόνα ελέγχου από το repo.
+  const item = next || { id: 'δοκιμαστική εικόνα', type: 'POST', images: [CFG.TEST_IMAGE_URL] };
+  if (!next) console.log('Η ουρά δεν έχει ακόμα δημοσιεύσεις. Δοκιμή με την εικόνα ελέγχου.');
   const ig = igUserId_(), tok = token_();
-  const c = next.type === 'STORY'
-    ? createContainer_(ig, { image_url: next.images[0], media_type: 'STORIES' }, tok)
-    : createContainer_(ig, { image_url: next.images[0], caption: 'dry run' }, tok);
+  const c = item.type === 'STORY'
+    ? createContainer_(ig, { image_url: item.images[0], media_type: 'STORIES' }, tok)
+    : createContainer_(ig, { image_url: item.images[0], caption: 'dry run' }, tok);
   waitReady_(c, 0, 0, tok);
-  console.log('Instagram OK: δέχτηκε την εικόνα του ' + next.id + '. ΔΕΝ δημοσιεύτηκε τίποτα.');
-  if (fbEnabled_(next)) {
+  console.log('Instagram OK: δέχτηκε την ' + (next ? 'εικόνα του ' + item.id : 'εικόνα ελέγχου') + '. ΔΕΝ δημοσιεύτηκε τίποτα.');
+  if (fbEnabled_(item)) {
     const pid = fbPageId_();
-    const ph = api_('post', pid + '/photos', { url: next.images[0], published: 'false' }, tok);
+    const ph = api_('post', pid + '/photos', { url: item.images[0], published: 'false' }, tok);
     try { api_('post', ph.id, { method: 'delete' }, tok); } catch (e) { /* μένει αδημοσίευτη, δεν φαίνεται πουθενά */ }
     console.log('Facebook OK: η σελίδα δέχτηκε την εικόνα (αδημοσίευτη, σβήστηκε). ΔΕΝ δημοσιεύτηκε τίποτα.');
   }
