@@ -31,7 +31,7 @@ M = 18
 DAYS = ['Δευτέρα', 'Τρίτη', 'Τετάρτη', 'Πέμπτη', 'Παρασκευή', 'Σάββατο', 'Κυριακή']
 LIMIT = int(2.8 * 1024 * 1024)
 ACC = 'LS'
-POST_TIME, STORY_TIME = '21:00', '09:30'
+POST_TIME, STORY_TIME = '22:00', '10:00'   # απόφαση 22/11/2026: ώρες μεγαλύτερης δραστηριότητας κοινού (Meta)
 cap_style = ParagraphStyle('c', fontName='S', fontSize=9.4, leading=12.6, textColor=INK)
 EMOJI_FONT = '/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf'
 EMOJI_DIR = os.path.join(os.environ.get('TMPDIR', '/tmp'), 'ls_emoji')

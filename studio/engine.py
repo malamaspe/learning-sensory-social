@@ -16,6 +16,8 @@ F = ROOT / 'fonts/node_modules/@fontsource'
 Y, P, B, INK = '#FFDD00', '#E5007D', '#004C8C', '#1F2328'
 CREAM, PT, YT, BT = '#FFFBEA', '#FDE8F2', '#FFF8CC', '#EEF4FA'
 EMAIL = 'learning.sensory.or@gmail.com'
+# CTA (απόφαση Λαμπρινής 22/11/2026): ραντεβού αξιολόγησης με τηλέφωνο, σταθερό και κινητό, στη θέση του email.
+PHONES = [('Σταθερό', '2310\u00a0698\u00a0793'), ('Κινητό', '690\u00a0737\u00a07841')]
 POST, STORY = (1080, 1350), (1080, 1920)
 
 
@@ -65,6 +67,8 @@ body{width:__W__px;height:__H__px;background:__BG__;color:#1F2328;font-family:'M
 .dots{position:absolute;border-radius:50%}
 .count{position:absolute;top:66px;right:74px;font-family:'RND';font-weight:700;font-size:30px;color:#004C8C;opacity:.75}
 .mail{display:inline-block;font-family:'RND';font-weight:700;font-size:38px;color:#004C8C;background:#fff;border-radius:999px;padding:18px 38px 20px}
+.tel{display:block;width:fit-content;font-family:'RND';font-weight:800;font-size:44px;color:#004C8C;background:#fff;border-radius:999px;padding:16px 40px 18px;margin-top:22px}
+.tel span{font-weight:700;font-size:30px;color:#E5007D;margin-right:16px}
 """
 
 
@@ -168,7 +172,7 @@ def ls_quote(quote, who, label='Κριτική Google', size=POST, seed=0):
 
 
 def ls_cta(title, body, size=POST):
-    """Κλείσιμο carousel / story: ραντεβού αξιολόγησης με email."""
+    """Κλείσιμο carousel / story: ραντεβού αξιολόγησης με τηλέφωνο (σταθερό + κινητό)."""
     w, h = size
     big = h == 1920
     inner = f"""<div class='dots' style='left:-120px;top:-140px;width:420px;height:420px;background:#fff;opacity:.10'></div>
@@ -177,7 +181,7 @@ def ls_cta(title, body, size=POST):
       <div style='font-family:RND;font-weight:800;font-size:{86 if not big else 104}px;line-height:1.08'>{e(title)}</div>
       <div style='width:96px;height:12px;border-radius:6px;background:#FFDD00;margin:46px 0 40px'></div>
       <div style='font-size:{42 if not big else 50}px;line-height:1.42;font-weight:500'>{e(body)}</div>
-      <div class='mail' style='margin-top:54px'>✉ {EMAIL}</div>
+      <div style='margin-top:40px'>{''.join(f"<div class='tel'><span>{k}</span>{v}</div>" for k, v in PHONES)}</div>
     </div>
     <div style='position:absolute;left:84px;bottom:{80 if not big else 330}px;background:#FFDD00;border-radius:34px;padding:20px 30px'>
       <img src='{logo('ls_logo_yellow.png')}' style='height:{150 if not big else 170}px;display:block'></div>"""

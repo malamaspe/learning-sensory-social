@@ -13,7 +13,7 @@
 
 ΦΡΑΓΜΟΣ: κάθε αρχείο πρέπει να είναι «ok» στο privacy_manifest.json (οπτικά ελεγμένο, χωρίς metadata, ίδιο
 sha256). Αλλιώς σταματάει και δεν γράφει τίποτα.
-Ώρες (απόφαση 21/11/2026): post/reel 21:00 (Δευ, Τετ, Παρ, Κυρ), story 09:30 κάθε μέρα.
+Ώρες (απόφαση 22/11/2026, από το Meta): post/reel 22:00 (Δευ, Τετ, Παρ, Κυρ), story 10:00 κάθε μέρα.
 """
 import glob, json, os, shutil, sys
 from datetime import date, datetime, timedelta
@@ -25,7 +25,7 @@ from privacy_check import cleared, metadata_problems  # noqa: E402
 ATH = ZoneInfo('Europe/Athens')
 REPO_RAW = 'https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/'
 ACC = 'LS'
-POST_TIME, STORY_TIME = '21:00', '09:30'
+POST_TIME, STORY_TIME = '22:00', '10:00'   # απόφαση 22/11/2026: ώρες μεγαλύτερης δραστηριότητας κοινού (Meta)
 POST_DAYS = {0, 2, 4, 6}   # Δευτέρα, Τετάρτη, Παρασκευή, Κυριακή
 BANNED = ['συμβεβλημ']     # δεν υπάρχει σύμβαση με τον ΕΟΠΥΥ· γράφουμε «Εξυπηρετούμε γνωματεύσεις ΕΟΠΥΥ»
 IG_CAPTION_MAX = 2200
