@@ -3,6 +3,129 @@
  "timezone": "Europe/Athens",
  "items": [
   {
+   "id": "LS-2026-11-23-story",
+   "account": "LS",
+   "type": "STORY",
+   "publish_at": "2026-11-23T10:00:00+02:00",
+   "images": [
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-23_story_01.jpg"
+   ]
+  },
+  {
+   "id": "LS-2026-11-23-post",
+   "account": "LS",
+   "type": "CAROUSEL",
+   "publish_at": "2026-11-23T22:00:00+02:00",
+   "images": [
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-23_post_01.jpg",
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-23_post_02.jpg",
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-23_post_03.jpg",
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-23_post_04.jpg"
+   ],
+   "caption": "Ειδική διαπαιδαγώγηση 📚\n\nΚάθε παιδί μαθαίνει με τον δικό του τρόπο. Στην ειδική διαπαιδαγώγηση στηρίζουμε την ανάγνωση, τη γραφή, τις μαθηματικές έννοιες, την προσοχή και την οργάνωση, με παιχνίδι, εποπτικό υλικό και μικρούς, σταθερούς στόχους.\n\nΣυνεργαζόμαστε με την οικογένεια και, όπου χρειάζεται, με το σχολείο.\n\n📞 Ραντεβού αξιολόγησης: 2310 698 793 · 690 737 7841\n📍 Ωραιόκαστρο\n\n#Ωραιόκαστρο #ειδικήδιαπαιδαγώγηση #LearningAndSensory #μαθησιακέςδυσκολίες"
+  },
+  {
+   "id": "LS-2026-11-24-story",
+   "account": "LS",
+   "type": "STORY",
+   "publish_at": "2026-11-24T10:00:00+02:00",
+   "images": [
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-24_story_01.jpg"
+   ]
+  },
+  {
+   "id": "LS-2026-11-25-story",
+   "account": "LS",
+   "type": "STORY",
+   "publish_at": "2026-11-25T10:00:00+02:00",
+   "images": [
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-25_story_01.jpg"
+   ]
+  },
+  {
+   "id": "LS-2026-11-25-post",
+   "account": "LS",
+   "type": "IMAGE",
+   "publish_at": "2026-11-25T22:00:00+02:00",
+   "images": [
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-25_post_01.jpg"
+   ],
+   "caption": "Ευχαριστούμε για τα όμορφα λόγια! 💛\n\nΗ εμπιστοσύνη των οικογενειών είναι η μεγαλύτερη χαρά μας.\n\n📞 Ραντεβού αξιολόγησης: 2310 698 793 · 690 737 7841\n📍 Ωραιόκαστρο\n\n#Ωραιόκαστρο #LearningAndSensory #ειδικέςθεραπείες"
+  },
+  {
+   "id": "LS-2026-11-26-story",
+   "account": "LS",
+   "type": "STORY",
+   "publish_at": "2026-11-26T10:00:00+02:00",
+   "images": [
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-26_story_01.jpg"
+   ]
+  },
+  {
+   "id": "LS-2026-11-27-story",
+   "account": "LS",
+   "type": "STORY",
+   "publish_at": "2026-11-27T10:00:00+02:00",
+   "images": [
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-27_story_01.jpg"
+   ]
+  },
+  {
+   "id": "LS-2026-11-27-post",
+   "account": "LS",
+   "type": "CAROUSEL",
+   "publish_at": "2026-11-27T22:00:00+02:00",
+   "images": [
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-27_post_01.jpg",
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-27_post_02.jpg",
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-27_post_03.jpg",
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-27_post_04.jpg"
+   ],
+   "caption": "Ομάδες κοινωνικών δεξιοτήτων 🤝\n\nΣτην ομάδα τα παιδιά εξασκούνται να περιμένουν τη σειρά τους, να κάνουν κουβέντα, να μοιράζονται, να καταλαβαίνουν τα συναισθήματα και να λύνουν μικρές διαφωνίες. Όλα μέσα από το παιχνίδι, με την καθοδήγηση θεραπευτή.\n\n📞 Ραντεβού αξιολόγησης: 2310 698 793 · 690 737 7841\n📍 Ωραιόκαστρο\n\n#Ωραιόκαστρο #κοινωνικέςδεξιότητες #LearningAndSensory #ψυχολογικήυποστήριξη"
+  },
+  {
+   "id": "LS-2026-11-28-story",
+   "account": "LS",
+   "type": "STORY",
+   "publish_at": "2026-11-28T10:00:00+02:00",
+   "images": [
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-28_story_01.jpg"
+   ]
+  },
+  {
+   "id": "LS-2026-11-29-story",
+   "account": "LS",
+   "type": "STORY",
+   "publish_at": "2026-11-29T10:00:00+02:00",
+   "images": [
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-29_story_01.jpg"
+   ]
+  },
+  {
+   "id": "LS-2026-11-29-post",
+   "account": "LS",
+   "type": "CAROUSEL",
+   "publish_at": "2026-11-29T22:00:00+02:00",
+   "images": [
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-29_post_01.jpg",
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-29_post_02.jpg",
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-29_post_03.jpg",
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-29_post_04.jpg",
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-29_post_05.jpg",
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-29_post_06.jpg"
+   ],
+   "caption": "Οπτικό πρόγραμμα: η μέρα μας σε εικόνες 🗓️\n\nΜικρές κάρτες με εικόνες που δείχνουν με τη σειρά τι θα κάνουμε μέσα στη μέρα. Για πολλά παιδιά κάνουν τη μέρα πιο προβλέψιμη, τις αλλαγές από τη μία δραστηριότητα στην άλλη πιο εύκολες και τα ίδια πιο αυτόνομα. Σύρετε για να δείτε πώς το φτιάχνουμε και πώς το χρησιμοποιούμε 👉\n\nΑν θέλετε να δούμε μαζί τι ταιριάζει στο δικό σας παιδί, καλέστε μας.\n\n📞 Ραντεβού αξιολόγησης: 2310 698 793 · 690 737 7841\n📍 Ωραιόκαστρο\n\n#Ωραιόκαστρο #συμβουλέςγιαγονείς #LearningAndSensory #ειδικήδιαπαιδαγώγηση #εργοθεραπεία"
+  },
+  {
+   "id": "LS-2026-11-30-story",
+   "account": "LS",
+   "type": "STORY",
+   "publish_at": "2026-11-30T10:00:00+02:00",
+   "images": [
+    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-30_story_01.jpg"
+   ]
+  },
+  {
    "id": "LS-2026-12-01-story",
    "account": "LS",
    "type": "STORY",
