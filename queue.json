@@ -3,15 +3,6 @@
  "timezone": "Europe/Athens",
  "items": [
   {
-   "id": "LS-2026-11-23-story",
-   "account": "LS",
-   "type": "STORY",
-   "publish_at": "2026-11-23T10:00:00+02:00",
-   "images": [
-    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-23_story_01.jpg"
-   ]
-  },
-  {
    "id": "LS-2026-11-23-post",
    "account": "LS",
    "type": "CAROUSEL",
