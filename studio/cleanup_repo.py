@@ -53,6 +53,11 @@ def main():
             print('  -', g)
         return
 
+    # Το git filter-repo δεν υπάρχει πάντα στο περιβάλλον: εγκατάσταση ΠΡΙΝ από το commit, αλλιώς μένει τοπικό
+    # commit χωρίς push και μια δεύτερη εκτέλεση δεν βρίσκει τίποτα να κάνει.
+    if a.purge_history and subprocess.run(['git', 'filter-repo', '--version'], capture_output=True).returncode != 0:
+        subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', '--break-system-packages', 'git-filter-repo'],
+                       check=True)
     if a.purge_history and git(repo, 'rev-parse', '--is-shallow-repository', capture=True) == 'true':
         git(repo, 'fetch', '--unshallow', 'origin')
     q['items'] = keep
