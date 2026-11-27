@@ -3,28 +3,6 @@
  "timezone": "Europe/Athens",
  "items": [
   {
-   "id": "LS-2026-11-23-post",
-   "account": "LS",
-   "type": "CAROUSEL",
-   "publish_at": "2026-11-23T22:00:00+02:00",
-   "images": [
-    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-23_post_01.jpg",
-    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-23_post_02.jpg",
-    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-23_post_03.jpg",
-    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-23_post_04.jpg"
-   ],
-   "caption": "Ειδική διαπαιδαγώγηση 📚\n\nΚάθε παιδί μαθαίνει με τον δικό του τρόπο. Στην ειδική διαπαιδαγώγηση στηρίζουμε την ανάγνωση, τη γραφή, τις μαθηματικές έννοιες, την προσοχή και την οργάνωση, με παιχνίδι, εποπτικό υλικό και μικρούς, σταθερούς στόχους.\n\nΣυνεργαζόμαστε με την οικογένεια και, όπου χρειάζεται, με το σχολείο.\n\n📞 Ραντεβού αξιολόγησης: 2310 698 793 · 690 737 7841\n📍 Ωραιόκαστρο\n\n#Ωραιόκαστρο #ειδικήδιαπαιδαγώγηση #LearningAndSensory #μαθησιακέςδυσκολίες"
-  },
-  {
-   "id": "LS-2026-11-24-story",
-   "account": "LS",
-   "type": "STORY",
-   "publish_at": "2026-11-24T10:00:00+02:00",
-   "images": [
-    "https://raw.githubusercontent.com/malamaspe/learning-sensory-social/main/media/2026-11/LS/2026-11-24_story_01.jpg"
-   ]
-  },
-  {
    "id": "LS-2026-11-25-story",
    "account": "LS",
    "type": "STORY",
